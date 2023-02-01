@@ -28,16 +28,24 @@
   ], 
   "outbounds": [
     {
-      "protocol": "freedom", 
-      "settings": { }, 
-      "tag": "direct"
-    }, 
-    {
-      "protocol": "blackhole", 
-      "settings": { }, 
-      "tag": "blocked"
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "legv1.junyuzheng.com",
+            "port": 443, 
+            "users": [
+              {
+                "id": "f2101d19-3be9-4f96-b8f4-20ee2c0dad87",
+                "alterId": 0
+              }
+            ]
+          }
+        ]
+      },
+      "tag": "reroute"
     }
-  ], 
+  ],
   "dns": {
     "servers": [
       "https+local://1.1.1.1/dns-query",
@@ -56,7 +64,7 @@
         "inboundTag": [
           "vmess-in"
         ],
-        "outboundTag": "direct"
+        "outboundTag": "reroute"
       }
     ]
   }
