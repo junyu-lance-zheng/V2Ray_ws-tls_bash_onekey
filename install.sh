@@ -57,6 +57,7 @@ nginx_version="1.20.1"
 openssl_version="1.1.1k"
 jemalloc_version="5.2.1"
 old_config_status="off"
+script_dir=$(pwd)
 # v2ray_plugin_version="$(wget -qO- "https://github.com/shadowsocks/v2ray-plugin/tags" | grep -E "/shadowsocks/v2ray-plugin/releases/tag/" | head -1 | sed -r 's/.*tag\/v(.+)\">.*/\1/')"
 
 #移动旧版本配置信息 对小于 1.1.0 版本适配
@@ -522,7 +523,7 @@ acme() {
 
 v2ray_conf_add_tls() {
     cd /etc/v2ray || exit
-    cp ./tls/config.json ./config.json
+    cp ${script_dir}/tls/config.json ./config.json
     modify_path
     modify_inbound_port
     modify_UUID
@@ -530,7 +531,7 @@ v2ray_conf_add_tls() {
 
 v2ray_conf_add_h2() {
     cd /etc/v2ray || exit
-    cp ./http2/config.json ./config.json
+    cp ${script_dir}/http2/config.json ./config.json
     modify_path
     modify_inbound_port
     modify_UUID
