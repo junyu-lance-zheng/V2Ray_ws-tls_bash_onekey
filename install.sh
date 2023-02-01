@@ -259,7 +259,7 @@ modify_path() {
     if [[ "on" == "$old_config_status" ]]; then
         camouflage="$(grep '\"path\"' $v2ray_qr_config_file | awk -F '"' '{print $4}')"
     fi
-    sed -i "/\"path\"/c \\\t  \"path\":\"${camouflage}\"" ${v2ray_conf}
+    sed -i "/\"//path\"/c \\\t  \"path\":\"${camouflage}\"" ${v2ray_conf}
     judge "V2ray 伪装路径 修改"
 }
 
@@ -269,9 +269,9 @@ modify_inbound_port() {
     fi
     if [[ "$shell_mode" != "h2" ]]; then
         PORT=$((RANDOM + 10000))
-        sed -i "/\"port\"/c  \    \"port\":${PORT}," ${v2ray_conf}
+        sed -i "/\"//port\"/c  \    \"port\":${PORT}," ${v2ray_conf}
     else
-        sed -i "/\"port\"/c  \    \"port\":${port}," ${v2ray_conf}
+        sed -i "/\"//port\"/c  \    \"port\":${port}," ${v2ray_conf}
     fi
     judge "V2ray inbound_port 修改"
 }
@@ -281,7 +281,7 @@ modify_UUID() {
     if [[ "on" == "$old_config_status" ]]; then
         UUID="$(info_extraction '\"id\"')"
     fi
-    sed -i "/\"id\"/c \\\t  \"id\":\"${UUID}\"," ${v2ray_conf}
+    sed -i "/\"//id\"/c \\\t  \"id\":\"${UUID}\"," ${v2ray_conf}
     judge "V2ray UUID 修改"
     [ -f ${v2ray_qr_config_file} ] && sed -i "/\"id\"/c \\  \"id\": \"${UUID}\"," ${v2ray_qr_config_file}
     echo -e "${OK} ${GreenBG} UUID:${UUID} ${Font}"
