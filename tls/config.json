@@ -25,7 +25,7 @@
         }
       }
     }
-  ], 
+  ],
   "outbounds": [
     {
       "protocol": "vmess",
@@ -33,7 +33,7 @@
         "vnext": [
           {
             "address": "legv1.junyuzheng.com",
-            "port": 443, 
+            "port": 443,
             "users": [
               {
                 "id": "f2101d19-3be9-4f96-b8f4-20ee2c0dad87",
@@ -42,6 +42,13 @@
             ]
           }
         ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/e81dd8c0e771/"
+        }
       },
       "tag": "reroute"
     }
