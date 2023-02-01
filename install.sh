@@ -323,7 +323,6 @@ v2ray_install() {
     fi
     mkdir -p /root/v2ray
     cd /root/v2ray || exit
-    wget -N --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/v2ray.sh
 
     if [[ -f v2ray.sh ]]; then
         rm -rf $v2ray_systemd_file
@@ -522,7 +521,7 @@ acme() {
 
 v2ray_conf_add_tls() {
     cd /etc/v2ray || exit
-    wget --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/tls/config.json -O config.json
+    cp ./tls/config.json ./config.json
     modify_path
     modify_inbound_port
     modify_UUID
@@ -530,7 +529,7 @@ v2ray_conf_add_tls() {
 
 v2ray_conf_add_h2() {
     cd /etc/v2ray || exit
-    wget --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/http2/config.json -O config.json
+    cp ./http2/config.json ./config.json
     modify_path
     modify_inbound_port
     modify_UUID
@@ -956,27 +955,6 @@ install_v2_h2() {
     enable_process_systemd
 
 }
-update_sh() {
-    ol_version=$(curl -L -s https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/install.sh | grep "shell_version=" | head -1 | awk -F '=|"' '{print $3}')
-    echo "$ol_version" >$version_cmp
-    echo "$shell_version" >>$version_cmp
-    if [[ "$shell_version" < "$(sort -rV $version_cmp | head -1)" ]]; then
-        echo -e "${OK} ${GreenBG} 存在新版本，是否更新 [Y/N]? ${Font}"
-        read -r update_confirm
-        case $update_confirm in
-        [yY][eE][sS] | [yY])
-            wget -N --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/install.sh
-            echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
-            exit 0
-            ;;
-        *) ;;
-
-        esac
-    else
-        echo -e "${OK} ${GreenBG} 当前版本为最新版本 ${Font}"
-    fi
-
-}
 maintain() {
     echo -e "${RedBG}该选项暂时无法使用${Font}"
     echo -e "${RedBG}$1${Font}"
@@ -1009,14 +987,12 @@ modify_camouflage_path() {
 }
 
 menu() {
-    update_sh
     echo -e "\t V2ray 安装管理脚本 ${Red}[${shell_version}]${Font}"
     echo -e "\t---authored by wulabing---"
     echo -e "\thttps://github.com/wulabing\n"
     echo -e "当前已安装版本:${shell_mode}\n"
 
     echo -e "—————————————— 安装向导 ——————————————"""
-    echo -e "${Green}0.${Font}  升级 脚本"
     echo -e "${Green}1.${Font}  安装 V2Ray (Nginx+ws+tls)"
     echo -e "${Green}2.${Font}  安装 V2Ray (http/2)"
     echo -e "${Green}3.${Font}  升级 V2Ray core"
@@ -1040,9 +1016,6 @@ menu() {
 
     read -rp "请输入数字：" menu_num
     case $menu_num in
-    0)
-        update_sh
-        ;;
     1)
         shell_mode="ws"
         install_v2ray_ws_tls
